@@ -1,115 +1,199 @@
-import { test, expect } from "@playwright/test";
+// tests/registration.validation.spec.ts
+import { test, expect, type Page } from "@playwright/test";
 import { RegistrationPage } from "../pages/RegistrationPage";
-import { REQUIRED_BASE } from "../data/registration.data";
+import {
+  REQUIRED_BASE,
+  TEST_EMAILS,
+  TEST_MOBILES,
+  TEST_NAMES,
+  TEST_FILES,
+} from "../data/registration.data";
 
-const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
+// const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-test.afterEach(async () => {
-  await delay(2000);
-});
+// test.afterEach(async () => {
+//   await delay(2000);
+// });
 
 test.describe("Student Registration Form - Validation", () => {
-  // Required fields
-  test("TC02: Required - First Name blank", async ({
-    page,
-  }) => {
-    const reg = new RegistrationPage(page);
+  let reg: RegistrationPage;
+  let page: Page;
+
+  test.beforeEach(async ({ page: p }) => {
+    page = p;
+    reg = new RegistrationPage(page);
     await reg.goto();
-
-    await reg.fillForm({ ...REQUIRED_BASE, firstName: "" });
-    await reg.submit();
-
-    await expect(reg.modalContent).toBeHidden();
-    await expect(page.locator("#firstName:invalid")).toBeVisible();
   });
 
-  test("TC03: Required - Last Name blank", async ({ page }) => {
-    const reg = new RegistrationPage(page);
-    await reg.goto();
-
-    await reg.fillForm({ ...REQUIRED_BASE, lastName: "" });
-    await reg.submit();
-
+  async function expectPreventSubmit(invalidLocator: string) {
     await expect(reg.modalContent).toBeHidden();
-    await expect(page.locator("#lastName:invalid")).toBeVisible();
+    await expect(page.locator(invalidLocator)).toBeVisible();
+  }
+
+  async function closeModalIfVisible() {
+    const closeBtn = page.locator("#closeLargeModal");
+    if (await closeBtn.isVisible()) {
+      await closeBtn.click({ force: true }); // กัน ads ทับ
+      await expect(reg.modalContent).toBeHidden();
+    }
+  }
+
+
+  test.describe("Required fields", () => {
+    // All Pass
+    test("TC01: First Name blank", async () => {
+      await reg.fillForm({ ...REQUIRED_BASE, firstName: "" });
+      await reg.submit();
+      await expectPreventSubmit("#firstName:invalid");
+    });
+
+    test("TC02: Last Name blank", async () => {
+      await reg.fillForm({ ...REQUIRED_BASE, lastName: "" });
+      await reg.submit();
+      await expectPreventSubmit("#lastName:invalid");
+    });
+
+
+    test("TC03: Gender blank", async () => {
+      await reg.fillForm({ ...REQUIRED_BASE, gender: undefined });
+      await reg.submit();
+
+      await expect(reg.modalContent).toBeHidden();
+      await expect(page.locator('input[name="gender"]:invalid').first()).toBeVisible();
+    });
+
+    test("TC04: Mobile blank", async () => {
+      await reg.fillForm({ ...REQUIRED_BASE, mobile: "" });
+      await reg.submit();
+      await expectPreventSubmit("#userNumber:invalid");
+    });
   });
 
-  test("TC04: Required - Gender blank", async ({ page }) => {
-    const reg = new RegistrationPage(page);
-    await reg.goto();
+  // Name format
+  test.describe("Name format (Alphabetic only)", () => {
+    // All Fail
+    test("TC05: First Name numeric", async () => {
+      await reg.fillForm({ ...REQUIRED_BASE, firstName: TEST_NAMES.numeric });
+      await reg.submit();
+      await expectPreventSubmit("#firstName:invalid");
+    });
 
-    await reg.fillForm({ ...REQUIRED_BASE, gender: undefined });
-    await reg.submit();
+    test("TC06: First Name special characters", async () => {
+      await reg.fillForm({ ...REQUIRED_BASE, firstName: TEST_NAMES.special });
+      await reg.submit();
+      await expectPreventSubmit("#firstName:invalid");
+    });
 
-    await expect(reg.modalContent).toBeHidden();
-    await expect(
-      page.locator('input[name="gender"]:invalid').first(),
-    ).toBeVisible();
-  });
+    test("TC07: Last Name numeric", async () => {
+      await reg.fillForm({ ...REQUIRED_BASE, lastName: TEST_NAMES.numeric });
+      await reg.submit();
+      await expectPreventSubmit("#lastName:invalid");
+    });
 
-  test("TC05: Required - Mobile blank", async ({ page }) => {
-    const reg = new RegistrationPage(page);
-    await reg.goto();
-
-    await reg.fillForm({ ...REQUIRED_BASE, mobile: "" });
-    await reg.submit();
-
-    await expect(reg.modalContent).toBeHidden();
-    await expect(page.locator("#userNumber:invalid")).toBeVisible();
+    test("TC08: Last Name special characters", async () => {
+      await reg.fillForm({ ...REQUIRED_BASE, lastName: TEST_NAMES.special });
+      await reg.submit();
+      await expectPreventSubmit("#lastName:invalid");
+    });
   });
 
   // Mobile validation
-  test("TC06: Mobile valid 10 digits", async ({ page }) => {
-    const reg = new RegistrationPage(page);
-    await reg.goto();
+  test.describe("Mobile validation", () => {
+    // All Pass
+    test("TC09: Mobile valid 10 digits", async () => {
+      await reg.fillForm({ ...REQUIRED_BASE, mobile: TEST_MOBILES.valid10 });
+      await reg.submit();
+      await reg.expectModalVisible();
+      // await closeModalIfVisible();
+    });
 
-    await reg.fillForm({ ...REQUIRED_BASE, mobile: "0812345678" });
-    await reg.submit();
+    test("TC10: Mobile invalid 9 digits", async () => {
+      await reg.fillForm({ ...REQUIRED_BASE, mobile: TEST_MOBILES.invalid9 });
+      await reg.submit();
+      await expectPreventSubmit("#userNumber:invalid");
+    });
 
-    await reg.expectModalVisible();
-  });
+    test("TC11: Mobile invalid contains letters", async () => {
+      await reg.fillForm({ ...REQUIRED_BASE, mobile: TEST_MOBILES.invalidLetters });
+      await reg.submit();
+      await expectPreventSubmit("#userNumber:invalid");
+    });
 
-  test("TC07: Mobile invalid 9 digits", async ({ page }) => {
-    const reg = new RegistrationPage(page);
-    await reg.goto();
-
-    await reg.fillForm({ ...REQUIRED_BASE, mobile: "081234567" });
-    await reg.submit();
-
-    await expect(reg.modalContent).toBeHidden();
-    await expect(page.locator("#userNumber:invalid")).toBeVisible();
-  });
-
-  test("TC08: Mobile invalid contains letters", async ({ page }) => {
-    const reg = new RegistrationPage(page);
-    await reg.goto();
-
-    await reg.fillForm({ ...REQUIRED_BASE, mobile: "0812345abc" });
-    await reg.submit();
-
-    await expect(reg.modalContent).toBeHidden();
-    await expect(page.locator("#userNumber:invalid")).toBeVisible();
+    test("TC12: Mobile invalid contains special symbols", async () => {
+      await reg.fillForm({ ...REQUIRED_BASE, mobile: TEST_MOBILES.invalidSymbols });
+      await reg.submit();
+      await expectPreventSubmit("#userNumber:invalid");
+    });
   });
 
   // Email validation
-  test("TC09: Email valid", async ({ page }) => {
-    const reg = new RegistrationPage(page);
-    await reg.goto();
+  test.describe("Email validation", () => {
+    test("TC13: Email valid (@gmail)", async () => {
+      await reg.fillForm({ ...REQUIRED_BASE, email: TEST_EMAILS.validBasic });
+      await reg.submit();
+      await reg.expectModalVisible();
+      // await closeModalIfVisible();
+    });
+    // Pass
 
-    await reg.fillForm({ ...REQUIRED_BASE, email: "name@example.com" });
-    await reg.submit();
+    test("TC14: Email valid (university subdomain)", async () => {
+      await reg.fillForm({ ...REQUIRED_BASE, email: TEST_EMAILS.validUniversity });
+      await reg.submit();
+      await reg.expectModalVisible();
+      await closeModalIfVisible();
+    });
+    // Pass (ควรจะ fail)
 
-    await reg.expectModalVisible();
+    test("TC15: Email invalid (missing @)", async () => {
+      await reg.fillForm({ ...REQUIRED_BASE, email: TEST_EMAILS.invalidMissingAt });
+      await reg.submit();
+      await expectPreventSubmit("#userEmail:invalid");
+    });
+    // Pass
+
+    test("TC16: Email invalid (missing domain extension)", async () => {
+      await reg.fillForm({ ...REQUIRED_BASE, email: TEST_EMAILS.invalidMissingTld });
+      await reg.submit();
+      await expectPreventSubmit("#userEmail:invalid");
+    });
+    // Pass
   });
 
-  test("TC10: Email invalid (missing @)", async ({ page }) => {
-    const reg = new RegistrationPage(page);
-    await reg.goto();
+  // Picture upload validation
+  test.describe("Picture upload validation", () => {
+    test("TC17: Upload JPG", async () => {
+      await reg.fillForm({ ...REQUIRED_BASE, picturePath: TEST_FILES.jpg });
+      await reg.submit();
+      await reg.expectModalVisible();
+      // await closeModalIfVisible();
+    });
+    // Pass
 
-    await reg.fillForm({ ...REQUIRED_BASE, email: "nameexample.com" });
-    await reg.submit();
+    test("TC18: Upload PNG", async () => {
+      await reg.fillForm({ ...REQUIRED_BASE, picturePath: TEST_FILES.png });
+      await reg.submit();
+      await reg.expectModalVisible();
+      // await closeModalIfVisible();
+    });
+    // Pass
 
-    await expect(reg.modalContent).toBeHidden();
-    await expect(page.locator("#userEmail:invalid")).toBeVisible();
+    test("TC19: Upload PDF", async () => {
+      await reg.fillForm({ ...REQUIRED_BASE, picturePath: TEST_FILES.pdf });
+      await reg.submit();
+
+      await expect(reg.modalContent).toBeHidden();
+      await expect(page.locator("#uploadPicture:invalid")).toBeVisible();
+    });
+    // Fail (pdf อัปโหลดได้ submit ได้ Modal ขึ้น )
+
+    test("TC20: Upload TXT", async () => {
+      await reg.fillForm({ ...REQUIRED_BASE, picturePath: TEST_FILES.txt });
+      await reg.submit();
+    
+      await expect(reg.modalContent).toBeHidden();
+      await expect(page.locator("#uploadPicture:invalid")).toBeVisible();
+      // Fail (txt อัปโหลดได้ submit ได้ Modal ขึ้น )
+
+    });
   });
 });

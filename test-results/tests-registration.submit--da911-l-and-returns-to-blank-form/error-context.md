@@ -1,0 +1,169 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - link [ref=e4] [cursor=pointer]:
+        - /url: https://demoqa.com
+        - img [ref=e5]
+    - generic [ref=e8]:
+      - generic [ref=e11]:
+        - generic [ref=e14] [cursor=pointer]:
+          - generic [ref=e15]:
+            - img [ref=e17]
+            - text: Elements
+          - img [ref=e22]
+        - generic [ref=e24]:
+          - generic [ref=e26] [cursor=pointer]:
+            - generic [ref=e27]:
+              - img [ref=e29]
+              - text: Forms
+            - img [ref=e35]
+          - list [ref=e38]:
+            - listitem [ref=e39] [cursor=pointer]:
+              - link "Practice Form" [ref=e40]:
+                - /url: /automation-practice-form
+                - img [ref=e41]
+                - text: Practice Form
+        - generic [ref=e45] [cursor=pointer]:
+          - generic [ref=e46]:
+            - img [ref=e48]
+            - text: Alerts, Frame & Windows
+          - img [ref=e53]
+        - generic [ref=e57] [cursor=pointer]:
+          - generic [ref=e58]:
+            - img [ref=e60]
+            - text: Widgets
+          - img [ref=e66]
+        - generic [ref=e70] [cursor=pointer]:
+          - generic [ref=e71]:
+            - img [ref=e73]
+            - text: Interactions
+          - img [ref=e78]
+        - generic [ref=e82] [cursor=pointer]:
+          - generic [ref=e83]:
+            - img [ref=e85]
+            - text: Book Store Application
+          - img [ref=e90]
+      - generic [ref=e93]:
+        - heading "Practice Form" [level=1] [ref=e94]
+        - heading "Student Registration Form" [level=5] [ref=e95]
+        - generic [ref=e96]:
+          - generic [ref=e97]:
+            - generic [ref=e99]: Name
+            - textbox "First Name" [ref=e101]: Nitchakan
+            - textbox "Last Name" [ref=e103]: K
+          - generic [ref=e104]:
+            - generic [ref=e106]: Email
+            - textbox "name@example.com" [ref=e108]
+          - generic [ref=e109]:
+            - generic [ref=e110]: Gender
+            - generic [ref=e111]:
+              - generic [ref=e112]:
+                - radio "Male" [ref=e113]
+                - generic [ref=e114]: Male
+              - generic [ref=e115]:
+                - radio "Female" [checked] [ref=e116]
+                - generic [ref=e117]: Female
+              - generic [ref=e118]:
+                - radio "Other" [ref=e119]
+                - generic [ref=e120]: Other
+          - generic [ref=e121]:
+            - generic [ref=e123]: Mobile(10 Digits)
+            - textbox "Mobile Number" [ref=e125]: "0812345678"
+          - generic [ref=e126]:
+            - generic [ref=e128]: Date of Birth
+            - textbox [ref=e132]: 05 Mar 2006
+          - generic [ref=e133]:
+            - generic [ref=e135]: Subjects
+            - generic [ref=e137]:
+              - log [ref=e139]
+              - generic [ref=e140]:
+                - generic [ref=e141]:
+                  - generic [ref=e142]:
+                    - generic [ref=e143]: Maths
+                    - button "Remove Maths" [ref=e144] [cursor=pointer]:
+                      - img [ref=e145]
+                  - generic [ref=e147]:
+                    - generic [ref=e148]: Physics
+                    - button "Remove Physics" [ref=e149] [cursor=pointer]:
+                      - img [ref=e150]
+                  - combobox [ref=e153]
+                - img [ref=e156]
+          - generic [ref=e159]:
+            - generic [ref=e161]: Hobbies
+            - generic [ref=e162]:
+              - generic [ref=e163]:
+                - checkbox "Sports" [checked] [ref=e164]
+                - generic [ref=e165]: Sports
+              - generic [ref=e166]:
+                - checkbox "Reading" [checked] [ref=e167]
+                - generic [ref=e168]: Reading
+              - generic [ref=e169]:
+                - checkbox "Music" [ref=e170]
+                - generic [ref=e171]: Music
+          - generic [ref=e172]:
+            - generic [ref=e174]: Picture
+            - button "Choose File" [ref=e176] [cursor=pointer]
+          - generic [ref=e177]:
+            - generic [ref=e179]: Current Address
+            - textbox "Current Address" [ref=e181]: Bangkok, Thailand
+          - generic [ref=e182]:
+            - generic [ref=e184]: State and City
+            - generic [ref=e186]:
+              - log [ref=e188]
+              - generic [ref=e189]:
+                - generic [ref=e190]:
+                  - generic [ref=e191]: NCR
+                  - combobox [ref=e193]
+                - img [ref=e197]
+            - generic [ref=e200]:
+              - log [ref=e202]
+              - generic [ref=e203]:
+                - generic [ref=e204]:
+                  - generic [ref=e205]: Delhi
+                  - combobox [ref=e207]
+                - img [ref=e211]
+          - button "Submit" [ref=e215] [cursor=pointer]
+  - dialog "Thanks for submitting the form" [ref=e223]:
+    - generic [ref=e224]:
+      - generic [ref=e226]: Thanks for submitting the form
+      - table [ref=e229]:
+        - rowgroup [ref=e230]:
+          - row "Label Values" [ref=e231]:
+            - columnheader "Label" [ref=e232]
+            - columnheader "Values" [ref=e233]
+        - rowgroup [ref=e234]:
+          - row "Student Name Nitchakan K" [ref=e235]:
+            - cell "Student Name" [ref=e236]
+            - cell "Nitchakan K" [ref=e237]
+          - row "Student Email name@example.com" [ref=e238]:
+            - cell "Student Email" [ref=e239]
+            - cell "name@example.com" [ref=e240]
+          - row "Gender Female" [ref=e241]:
+            - cell "Gender" [ref=e242]
+            - cell "Female" [ref=e243]
+          - row "Mobile 0812345678" [ref=e244]:
+            - cell "Mobile" [ref=e245]
+            - cell "0812345678" [ref=e246]
+          - row "Date of Birth 05 March,2006" [ref=e247]:
+            - cell "Date of Birth" [ref=e248]
+            - cell "05 March,2006" [ref=e249]
+          - row "Subjects Maths, Physics" [ref=e250]:
+            - cell "Subjects" [ref=e251]
+            - cell "Maths, Physics" [ref=e252]
+          - row "Hobbies Sports, Reading" [ref=e253]:
+            - cell "Hobbies" [ref=e254]
+            - cell "Sports, Reading" [ref=e255]
+          - row "Picture sample01.png" [ref=e256]:
+            - cell "Picture" [ref=e257]
+            - cell "sample01.png" [ref=e258]
+          - row "Address Bangkok, Thailand" [ref=e259]:
+            - cell "Address" [ref=e260]
+            - cell "Bangkok, Thailand" [ref=e261]
+          - row "State and City NCR Delhi" [ref=e262]:
+            - cell "State and City" [ref=e263]
+            - cell "NCR Delhi" [ref=e264]
+      - button "Close" [active] [ref=e266] [cursor=pointer]
+```
