@@ -1,0 +1,143 @@
+// tests/registration.validation.spec.ts
+Student Registration Form - Validation
+
+[Required fields]
+
+TC01: First Name blank
+Pass
+Case: เว้น First Name → กด Submit
+Expected Result: submit ไม่ได้, Modal ไม่ขึ้น, First Name invalid
+Actual Result: Modal ไม่ขึ้น + First Name invalid
+
+TC02: Last Name blank
+Pass
+Case: เว้น Last Name → กด Submit
+Expected Result: submit ไม่ได้, Modal ไม่ขึ้น, Last Name invalid
+Actual Result: Modal ไม่ขึ้น + Last Name invalid
+
+TC03: Gender blank
+Pass
+Case: ไม่เลือก Gender → กด Submit
+Expected Result: submit ไม่ได้, Modal ไม่ขึ้น, Gender invalid
+Actual Result: Modal ไม่ขึ้น + Gender invalid
+
+TC04: Mobile blank
+Pass
+Case: เว้น Mobile → กด Submit
+Expected Result: submit ไม่ได้, Modal ไม่ขึ้น, Mobile invalid
+Actual Result: Modal ไม่ขึ้น + Mobile invalid
+
+
+[Name format (Alphabetic only)]
+
+TC05: First Name numeric
+Fail
+Case: กรอก First Name เป็นตัวเลข → กด Submit
+Expected Result: ห้าม submit, Modal ไม่ขึ้น, First Name invalid (เพราะต้องเป็น Alphabetic characters)
+Actual Result: Modal ขึ้น (submit ผ่าน)
+Cause: ระบบไม่มี validation บังคับรูปแบบชื่อเป็นตัวอักษรเท่านั้น
+
+TC06: First Name special characters
+Fail
+Case: กรอก First Name เป็นอักขระพิเศษ → กด Submit
+Expected Result: ห้าม submit, Modal ไม่ขึ้น, First Name invalid
+Actual Result: Modal ขึ้น (submit ผ่าน)
+Cause: ระบบไม่มี validation บล็อกอักขระพิเศษในชื่อ
+
+TC07: Last Name numeric
+Fail
+Case: กรอก Last Name เป็นตัวเลข → กด Submit
+Expected Result: ห้าม submit, Modal ไม่ขึ้น, Last Name invalid
+Actual Result: Modal ขึ้น (submit ผ่าน)
+Cause: ระบบไม่มี validation บังคับรูปแบบนามสกุลเป็นตัวอักษรเท่านั้น
+
+TC08: Last Name special characters
+Fail
+Case: กรอก Last Name เป็นอักขระพิเศษ → กด Submit
+Expected Result: ห้าม submit, Modal ไม่ขึ้น, Last Name invalid
+Actual Result: Modal ขึ้น (submit ผ่าน)
+Cause: ระบบไม่มี validation บล็อกอักขระพิเศษในนามสกุล
+
+
+[Mobile validation]
+
+TC09: Mobile valid 10 digits
+Pass
+Case: กรอก Mobile 10 หลัก → กด Submit
+Expected Result: submit ได้, Modal ขึ้น
+Actual Result: Modal ขึ้น
+
+TC10: Mobile invalid 9 digits
+Pass
+Case: กรอก Mobile 9 หลัก → กด Submit
+Expected Result: ห้าม submit, Modal ไม่ขึ้น, Mobile invalid
+Actual Result: Modal ไม่ขึ้น + Mobile invalid
+
+TC11: Mobile invalid contains letters
+Pass
+Case: กรอก Mobile มีตัวอักษร → กด Submit
+Expected Result: ห้าม submit, Modal ไม่ขึ้น, Mobile invalid
+Actual Result: Modal ไม่ขึ้น + Mobile invalid
+
+TC12: Mobile invalid contains special symbols
+Pass
+Case: กรอก Mobile มีสัญลักษณ์ → กด Submit
+Expected Result: ห้าม submit, Modal ไม่ขึ้น, Mobile invalid
+Actual Result: Modal ไม่ขึ้น + Mobile invalid
+
+
+[Email validation]
+
+TC13: Email valid (@gmail)
+Pass
+Case: กรอก Email ถูกต้อง → กด Submit
+Expected Result: submit ได้, Modal ขึ้น
+Actual Result: Modal ขึ้น
+
+TC14: Email invalid (university subdomain)
+Fail
+Case: กรอก Email รูปแบบมหาวิทยาลัย → กด Submit → ปิด modal
+Expected Result: ห้าม submit, Modal ไม่ขึ้น, Email invalid
+Actual Result: Modal ขึ้น 
+Cause: ระบบไม่มี validation .com ใน email
+
+TC15: Email invalid (missing @)
+Pass
+Case: กรอก Email ไม่มี @ → กด Submit
+Expected Result: ห้าม submit, Modal ไม่ขึ้น, Email invalid
+Actual Result: Modal ไม่ขึ้น + Email invalid
+
+TC16: Email invalid (missing domain extension)
+Pass
+Case: กรอก Email ไม่มี domain extension → กด Submit
+Expected Result: ห้าม submit, Modal ไม่ขึ้น, Email invalid
+Actual Result: Modal ไม่ขึ้น + Email invalid
+
+
+[Picture upload validation]
+
+TC17: Upload JPG
+Pass
+Case: อัปโหลดไฟล์ JPG → กด Submit
+Expected Result: submit ได้, Modal ขึ้น
+Actual Result: Modal ขึ้น
+
+TC18: Upload PNG
+Pass
+Case: อัปโหลดไฟล์ PNG → กด Submit
+Expected Result: submit ได้, Modal ขึ้น
+Actual Result: Modal ขึ้น
+
+TC19: Upload PDF
+Fail
+Case: อัปโหลดไฟล์ PDF → กด Submit
+Expected Result: ห้าม submit, Modal ไม่ขึ้น, uploadPicture invalid (เพราะอนุญาตเฉพาะ jpg/png)
+Actual Result: Modal ขึ้น (submit ผ่าน)
+Cause: ระบบไม่ได้มี validation บล็อกชนิดไฟล์ PDF จึง submit ได้
+
+TC20: Upload TXT
+Fail
+Case: อัปโหลดไฟล์ TXT → กด Submit
+Expected Result: ห้าม submit, Modal ไม่ขึ้น, uploadPicture invalid
+Actual Result: Modal ขึ้น (submit ผ่าน)
+Cause: ระบบไม่ได้บล็อกชนิดไฟล์ TXT จึง submit ได้

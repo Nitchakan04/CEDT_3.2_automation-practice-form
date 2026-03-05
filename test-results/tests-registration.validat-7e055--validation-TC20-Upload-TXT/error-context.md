@@ -1,0 +1,160 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - link [ref=e4] [cursor=pointer]:
+        - /url: https://demoqa.com
+        - img [ref=e5]
+    - generic [ref=e8]:
+      - generic [ref=e11]:
+        - generic [ref=e14] [cursor=pointer]:
+          - generic [ref=e15]:
+            - img [ref=e17]
+            - text: Elements
+          - img [ref=e22]
+        - generic [ref=e24]:
+          - generic [ref=e26] [cursor=pointer]:
+            - generic [ref=e27]:
+              - img [ref=e29]
+              - text: Forms
+            - img [ref=e35]
+          - list [ref=e38]:
+            - listitem [ref=e39] [cursor=pointer]:
+              - link "Practice Form" [ref=e40]:
+                - /url: /automation-practice-form
+                - img [ref=e41]
+                - text: Practice Form
+        - generic [ref=e45] [cursor=pointer]:
+          - generic [ref=e46]:
+            - img [ref=e48]
+            - text: Alerts, Frame & Windows
+          - img [ref=e53]
+        - generic [ref=e57] [cursor=pointer]:
+          - generic [ref=e58]:
+            - img [ref=e60]
+            - text: Widgets
+          - img [ref=e66]
+        - generic [ref=e70] [cursor=pointer]:
+          - generic [ref=e71]:
+            - img [ref=e73]
+            - text: Interactions
+          - img [ref=e78]
+        - generic [ref=e82] [cursor=pointer]:
+          - generic [ref=e83]:
+            - img [ref=e85]
+            - text: Book Store Application
+          - img [ref=e90]
+      - generic [ref=e93]:
+        - heading "Practice Form" [level=1] [ref=e94]
+        - heading "Student Registration Form" [level=5] [ref=e95]
+        - generic [ref=e96]:
+          - generic [ref=e97]:
+            - generic [ref=e99]: Name
+            - textbox "First Name" [ref=e101]: Nitchakan
+            - textbox "Last Name" [ref=e103]: K
+          - generic [ref=e104]:
+            - generic [ref=e106]: Email
+            - textbox "name@example.com" [ref=e108]
+          - generic [ref=e109]:
+            - generic [ref=e110]: Gender
+            - generic [ref=e111]:
+              - generic [ref=e112]:
+                - radio "Male" [ref=e113]
+                - generic [ref=e114]: Male
+              - generic [ref=e115]:
+                - radio "Female" [checked] [ref=e116]
+                - generic [ref=e117]: Female
+              - generic [ref=e118]:
+                - radio "Other" [ref=e119]
+                - generic [ref=e120]: Other
+          - generic [ref=e121]:
+            - generic [ref=e123]: Mobile(10 Digits)
+            - textbox "Mobile Number" [ref=e125]: "0812345678"
+          - generic [ref=e126]:
+            - generic [ref=e128]: Date of Birth
+            - textbox [ref=e132]: 06 Mar 2026
+          - generic [ref=e133]:
+            - generic [ref=e135]: Subjects
+            - generic [ref=e137]:
+              - log [ref=e139]
+              - combobox [ref=e143]
+          - generic [ref=e146]:
+            - generic [ref=e148]: Hobbies
+            - generic [ref=e149]:
+              - generic [ref=e150]:
+                - checkbox "Sports" [ref=e151]
+                - generic [ref=e152]: Sports
+              - generic [ref=e153]:
+                - checkbox "Reading" [ref=e154]
+                - generic [ref=e155]: Reading
+              - generic [ref=e156]:
+                - checkbox "Music" [ref=e157]
+                - generic [ref=e158]: Music
+          - generic [ref=e159]:
+            - generic [ref=e161]: Picture
+            - button "Choose File" [ref=e163] [cursor=pointer]
+          - generic [ref=e164]:
+            - generic [ref=e166]: Current Address
+            - textbox "Current Address" [ref=e168]
+          - generic [ref=e169]:
+            - generic [ref=e171]: State and City
+            - generic [ref=e173]:
+              - log [ref=e175]
+              - generic [ref=e176]:
+                - generic [ref=e177]:
+                  - generic [ref=e178]: Select State
+                  - combobox [ref=e180]
+                - img [ref=e184]
+            - generic [ref=e186]:
+              - generic:
+                - log
+                - generic:
+                  - generic:
+                    - generic: Select City
+                  - generic:
+                    - generic:
+                      - img
+          - button "Submit" [ref=e189] [cursor=pointer]
+  - dialog "Thanks for submitting the form" [active] [ref=e197]:
+    - generic [ref=e198]:
+      - generic [ref=e200]: Thanks for submitting the form
+      - table [ref=e203]:
+        - rowgroup [ref=e204]:
+          - row "Label Values" [ref=e205]:
+            - columnheader "Label" [ref=e206]
+            - columnheader "Values" [ref=e207]
+        - rowgroup [ref=e208]:
+          - row "Student Name Nitchakan K" [ref=e209]:
+            - cell "Student Name" [ref=e210]
+            - cell "Nitchakan K" [ref=e211]
+          - row "Student Email" [ref=e212]:
+            - cell "Student Email" [ref=e213]
+            - cell [ref=e214]
+          - row "Gender Female" [ref=e215]:
+            - cell "Gender" [ref=e216]
+            - cell "Female" [ref=e217]
+          - row "Mobile 0812345678" [ref=e218]:
+            - cell "Mobile" [ref=e219]
+            - cell "0812345678" [ref=e220]
+          - row "Date of Birth 06 March,2026" [ref=e221]:
+            - cell "Date of Birth" [ref=e222]
+            - cell "06 March,2026" [ref=e223]
+          - row "Subjects" [ref=e224]:
+            - cell "Subjects" [ref=e225]
+            - cell [ref=e226]
+          - row "Hobbies" [ref=e227]:
+            - cell "Hobbies" [ref=e228]
+            - cell [ref=e229]
+          - row "Picture sample04.txt" [ref=e230]:
+            - cell "Picture" [ref=e231]
+            - cell "sample04.txt" [ref=e232]
+          - row "Address" [ref=e233]:
+            - cell "Address" [ref=e234]
+            - cell [ref=e235]
+          - row "State and City" [ref=e236]:
+            - cell "State and City" [ref=e237]
+            - cell [ref=e238]
+      - button "Close" [ref=e240] [cursor=pointer]
+```

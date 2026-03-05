@@ -136,11 +136,10 @@ test.describe("Student Registration Form - Validation", () => {
     });
     // Pass
 
-    test("TC14: Email valid (university subdomain)", async () => {
-      await reg.fillForm({ ...REQUIRED_BASE, email: TEST_EMAILS.validUniversity });
+    test("TC14: Email invalid (university subdomain)", async () => {
+      await reg.fillForm({ ...REQUIRED_BASE, email: TEST_EMAILS.invalidUniversity });
       await reg.submit();
-      await reg.expectModalVisible();
-      await closeModalIfVisible();
+      await expectPreventSubmit("#userEmail:invalid");
     });
     // Pass (ควรจะ fail)
 

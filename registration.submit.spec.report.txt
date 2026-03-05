@@ -1,0 +1,15 @@
+// tests/registration.submit.spec.ts
+Student Registration Form - Submit & Modal
+
+TC01: Submit success
+Pass
+Case: กรอกข้อมูลครบ → กด Submit
+Expected Result: Modal ขึ้น + title ถูก + modal แสดงข้อมูลตรงกับที่กรอก
+Actual Result: Modal ขึ้น + title ถูก + ตารางแสดงข้อมูลตรงกับที่กรอก
+
+TC02: Close modal and returns to blank form
+Fail
+Case: กด Close ที่ modal
+Expected Result: ปิด modal + กลับไปเป็น blank form
+Actual Result: modal ไม่ปิด
+Cause: คลิกปุ่ม Close แล้ว modal ไม่ปิด (คลิกมือก็ไม่ปิด)

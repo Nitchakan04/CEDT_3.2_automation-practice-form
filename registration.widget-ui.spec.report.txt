@@ -1,0 +1,32 @@
+// tests/registration.widget-ui.spec.ts
+Student Registration Form - Widget & UI
+
+TC01: DOB default is today's system date
+Pass
+Case: เปิดหน้า form แล้วตรวจค่า DOB
+Expected Result: DOB default เป็นวันปัจจุบัน
+Actual Result: DOB เป็นวันปัจจุบัน
+
+TC02: DOB can be selected via calendar widget
+Pass
+Case: เปิด calendar แล้วเลือกวัน/เดือน/ปี
+Expected Result: ค่า DOB เปลี่ยนตามวันที่เลือก
+Actual Result: DOB แสดงวันที่เลือกสำเร็จ
+
+TC03: City is disabled until State is selected
+Pass
+Case: ยังไม่เลือก State แล้วเปิด City
+Expected Result: City ต้อง disabled
+Actual Result: City disabled/empty จนกว่าจะเลือก State
+
+TC04: City changes by State (filtered options)
+Pass
+Case: เลือก State 1 แล้วตรวจ City options → เปลี่ยนเป็น State 2 แล้วตรวจอีกครั้ง
+Expected Result: City ต้องมีเฉพาะเมืองของ State ที่เลือก และไม่ปนของ State อื่น
+Actual Result: City options ถูก filter ตาม State ถูกต้อง
+
+TC05: Subjects multi-entry
+Pass
+Case: เพิ่ม Subjects หลายค่า → ตรวจว่าเป็น tags → ลบ tag ได้
+Expected Result: Subjects เพิ่มได้หลายค่า, แสดงเป็น removable tags, ลบได้จริง
+Actual Result: เพิ่มหลายวิชาได้ + ขึ้น tags + ลบ tag ได้

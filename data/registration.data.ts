@@ -19,7 +19,7 @@ export const TEST_FILES = {
 // ==========================
 export const TEST_EMAILS = {
   validBasic: "name@example.com",
-  validUniversity: "nitchakan.kkng@student.chula.ac.th",
+  invalidUniversity: "name@student.chula.ac.th",
   invalidMissingAt: "nameexample.com",
   invalidMissingTld: "name@example",
 } as const;
@@ -38,10 +38,10 @@ export const TEST_MOBILES = {
 // Name Test Data
 // ==========================
 export const TEST_NAMES = {
-  validFirst: "Nitchakan",
-  validLast: "K",
+  validFirst: "name",
+  validLast: "surname",
   numeric: "12345",
-  special: "Ni@cha",
+  special: "N@me",
 } as const;
 
 // ==========================
