@@ -7,7 +7,7 @@ test.afterEach(async () => {
   await delay(2000);
 });
 
-test.describe("Student Registration Form (Midterm) - Widget & UI", () => {
+test.describe("Student Registration Form - Widget & UI", () => {
   // DOB widget
   test("TC11: DOB default is current system date", async ({ page }) => {
     const reg = new RegistrationPage(page);

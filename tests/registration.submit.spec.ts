@@ -10,7 +10,7 @@ test.afterEach(async () => {
   await delay(2000);
 });
 
-test.describe("Student Registration Form (Midterm) - Submit Success", () => {
+test.describe("Student Registration Form - Submit Success", () => {
   test("TC01: Submit success", async ({ page }) => {
     const reg = new RegistrationPage(page);
     await reg.goto();

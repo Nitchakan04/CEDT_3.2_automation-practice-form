@@ -8,9 +8,9 @@ test.afterEach(async () => {
   await delay(2000);
 });
 
-test.describe("Student Registration Form (Midterm) - Validation", () => {
+test.describe("Student Registration Form - Validation", () => {
   // Required fields
-  test("TC02: Required - First Name blank -> prevent submit", async ({
+  test("TC02: Required - First Name blank", async ({
     page,
   }) => {
     const reg = new RegistrationPage(page);
@@ -23,7 +23,7 @@ test.describe("Student Registration Form (Midterm) - Validation", () => {
     await expect(page.locator("#firstName:invalid")).toBeVisible();
   });
 
-  test("TC03: Required - Last Name blank -> prevent submit", async ({ page }) => {
+  test("TC03: Required - Last Name blank", async ({ page }) => {
     const reg = new RegistrationPage(page);
     await reg.goto();
 
@@ -34,7 +34,7 @@ test.describe("Student Registration Form (Midterm) - Validation", () => {
     await expect(page.locator("#lastName:invalid")).toBeVisible();
   });
 
-  test("TC04: Required - Gender blank -> prevent submit", async ({ page }) => {
+  test("TC04: Required - Gender blank", async ({ page }) => {
     const reg = new RegistrationPage(page);
     await reg.goto();
 
@@ -47,7 +47,7 @@ test.describe("Student Registration Form (Midterm) - Validation", () => {
     ).toBeVisible();
   });
 
-  test("TC05: Required - Mobile blank -> prevent submit", async ({ page }) => {
+  test("TC05: Required - Mobile blank", async ({ page }) => {
     const reg = new RegistrationPage(page);
     await reg.goto();
 
@@ -59,7 +59,7 @@ test.describe("Student Registration Form (Midterm) - Validation", () => {
   });
 
   // Mobile validation
-  test("TC06: Mobile valid 10 digits -> pass", async ({ page }) => {
+  test("TC06: Mobile valid 10 digits", async ({ page }) => {
     const reg = new RegistrationPage(page);
     await reg.goto();
 
@@ -69,7 +69,7 @@ test.describe("Student Registration Form (Midterm) - Validation", () => {
     await reg.expectModalVisible();
   });
 
-  test("TC07: Mobile invalid 9 digits -> fail", async ({ page }) => {
+  test("TC07: Mobile invalid 9 digits", async ({ page }) => {
     const reg = new RegistrationPage(page);
     await reg.goto();
 
@@ -80,7 +80,7 @@ test.describe("Student Registration Form (Midterm) - Validation", () => {
     await expect(page.locator("#userNumber:invalid")).toBeVisible();
   });
 
-  test("TC08: Mobile invalid contains letters -> fail", async ({ page }) => {
+  test("TC08: Mobile invalid contains letters", async ({ page }) => {
     const reg = new RegistrationPage(page);
     await reg.goto();
 
@@ -92,7 +92,7 @@ test.describe("Student Registration Form (Midterm) - Validation", () => {
   });
 
   // Email validation
-  test("TC09: Email valid -> pass", async ({ page }) => {
+  test("TC09: Email valid", async ({ page }) => {
     const reg = new RegistrationPage(page);
     await reg.goto();
 
@@ -102,7 +102,7 @@ test.describe("Student Registration Form (Midterm) - Validation", () => {
     await reg.expectModalVisible();
   });
 
-  test("TC10: Email invalid (missing @) -> fail", async ({ page }) => {
+  test("TC10: Email invalid (missing @)", async ({ page }) => {
     const reg = new RegistrationPage(page);
     await reg.goto();
 
