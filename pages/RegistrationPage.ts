@@ -1,0 +1,294 @@
+// pages/RegistrationPage.ts
+import { expect, Locator, Page } from "@playwright/test";
+import { BASE_URL } from "../data/registration.data";
+
+export type Gender = "Male" | "Female" | "Other";
+export type Hobby = "Sports" | "Reading" | "Music";
+
+export type RegistrationData = {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  gender?: Gender;
+  mobile?: string;
+
+  dob?: { day: number; month: number; year: number };
+
+  subjects?: string[];
+  hobbies?: Hobby[];
+  picturePath?: string;
+  address?: string;
+
+  state?: string;
+  city?: string;
+};
+
+export class RegistrationPage {
+  readonly page: Page;
+
+  // Inputs
+  readonly firstName: Locator;
+  readonly lastName: Locator;
+  readonly email: Locator;
+  readonly mobile: Locator;
+  readonly dobInput: Locator;
+  readonly subjectsInput: Locator;
+  readonly uploadPicture: Locator;
+  readonly address: Locator;
+  readonly submitBtn: Locator;
+
+  // State/City
+  readonly stateContainer: Locator;
+  readonly cityContainer: Locator;
+  readonly stateInput: Locator;
+  readonly cityInput: Locator;
+
+  // Modal
+  readonly modalRoot: Locator;
+  readonly modalContent: Locator;
+  readonly modalTitle: Locator;
+  readonly modalCloseBtn: Locator;
+
+  constructor(page: Page) {
+    this.page = page;
+
+    this.firstName = page.locator("#firstName");
+    this.lastName = page.locator("#lastName");
+    this.email = page.locator("#userEmail");
+    this.mobile = page.locator("#userNumber");
+    this.dobInput = page.locator("#dateOfBirthInput");
+    this.subjectsInput = page.locator("#subjectsInput");
+    this.uploadPicture = page.locator("#uploadPicture");
+    this.address = page.locator("#currentAddress");
+    this.submitBtn = page.locator("#submit");
+
+    this.stateContainer = page.locator("#state");
+    this.cityContainer = page.locator("#city");
+    this.stateInput = page.locator("#react-select-3-input");
+    this.cityInput = page.locator("#react-select-4-input");
+
+    this.modalRoot = page.locator(".modal");
+    this.modalContent = page.locator(".modal-content");
+    this.modalTitle = page.locator("#example-modal-sizes-title-lg");
+    this.modalCloseBtn = page.locator("#closeLargeModal");
+  }
+
+  // Navigation
+  async goto() {
+    await this.page.goto(BASE_URL, { waitUntil: "domcontentloaded" });
+    await expect(
+      this.page.getByText("Student Registration Form"),
+    ).toBeVisible();
+    await this.makePageStableForClicking();
+  }
+
+  async makePageStableForClicking() {
+    await this.page.addStyleTag({
+      content: `
+        #fixedban, footer, iframe { display:none !important; }
+      `,
+    });
+  }
+
+  // Fill form
+  async fillRequired(data: RegistrationData) {
+    if (data.firstName !== undefined) await this.firstName.fill(data.firstName);
+    if (data.lastName !== undefined) await this.lastName.fill(data.lastName);
+    if (data.gender !== undefined) await this.selectGender(data.gender);
+    if (data.mobile !== undefined) await this.mobile.fill(data.mobile);
+  }
+
+  async fillOptional(data: RegistrationData) {
+    if (data.email !== undefined) await this.email.fill(data.email);
+
+    if (data.dob !== undefined) {
+      await this.setDobByCalendar(data.dob.day, data.dob.month, data.dob.year);
+    }
+
+    if (data.subjects?.length) await this.addSubjects(data.subjects);
+
+    if (data.hobbies?.length) {
+      for (const h of data.hobbies) await this.selectHobby(h);
+    }
+
+    if (data.picturePath) {
+      await this.uploadPicture.setInputFiles(data.picturePath);
+    }
+
+    if (data.address !== undefined) await this.address.fill(data.address);
+
+    // เลือก state, city เฉพาะตอนมีครบทั้งคู่
+    if (data.state && data.city) {
+      await this.selectStateCity(data.state, data.city);
+    }
+  }
+
+  async fillForm(data: RegistrationData) {
+    await this.fillRequired(data);
+    await this.fillOptional(data);
+  }
+
+  // Gender, Hobby
+  private genderSel(g: Gender) {
+    return g === "Male"
+      ? "#gender-radio-1"
+      : g === "Female"
+        ? "#gender-radio-2"
+        : "#gender-radio-3";
+  }
+
+  private hobbySel(h: Hobby) {
+    return h === "Sports"
+      ? "#hobbies-checkbox-1"
+      : h === "Reading"
+        ? "#hobbies-checkbox-2"
+        : "#hobbies-checkbox-3";
+  }
+
+  async selectGender(g: Gender) {
+    const sel = this.genderSel(g);
+    await this.page.locator(sel).scrollIntoViewIfNeeded();
+    await this.page.evaluate((s) => {
+      const el = document.querySelector(s) as HTMLInputElement | null;
+      if (!el) throw new Error("Gender not found: " + s);
+      if (!el.checked) el.click();
+    }, sel);
+  }
+
+  async selectHobby(h: Hobby) {
+    const sel = this.hobbySel(h);
+    await this.page.locator(sel).scrollIntoViewIfNeeded();
+    await this.page.evaluate((s) => {
+      const el = document.querySelector(s) as HTMLInputElement | null;
+      if (!el) throw new Error("Hobby not found: " + s);
+      if (!el.checked) el.click();
+    }, sel);
+  }
+
+  // Subjects
+  async addSubjects(subjects: string[]) {
+    for (const s of subjects) {
+      await this.subjectsInput.scrollIntoViewIfNeeded();
+      await this.subjectsInput.click({ force: true });
+      await this.subjectsInput.fill(s);
+
+      const opt = this.page
+        .locator(".subjects-auto-complete__option")
+        .filter({ hasText: s })
+        .first();
+
+      await expect(opt).toBeVisible();
+      await opt.click();
+
+      // กัน dropdown ค้าง
+      await this.page.keyboard.press("Escape");
+    }
+  }
+
+  async subjectTagCount(): Promise<number> {
+    return await this.page
+      .locator(".subjects-auto-complete__multi-value")
+      .count();
+  }
+
+  async removeFirstSubjectTag() {
+    await this.page
+      .locator(".subjects-auto-complete__multi-value__remove")
+      .first()
+      .click();
+  }
+
+  // DOB
+  async getDobValue(): Promise<string> {
+    return await this.dobInput.inputValue();
+  }
+
+  async setDobByCalendar(day: number, month: number, year: number) {
+    await this.dobInput.click();
+
+    await this.page
+      .locator(".react-datepicker__month-select")
+      .selectOption(String(month - 1));
+    await this.page
+      .locator(".react-datepicker__year-select")
+      .selectOption(String(year));
+
+    const dd = String(day).padStart(2, "0");
+    await this.page
+      .locator(
+        `.react-datepicker__day--0${dd}:not(.react-datepicker__day--outside-month)`,
+      )
+      .first()
+      .click();
+
+    await expect(this.page.locator(".react-datepicker")).toBeHidden();
+  }
+
+  // State, City
+  async isCityDisabled(): Promise<boolean> {
+    const disabled = await this.cityInput.getAttribute("disabled");
+    return disabled !== null;
+  }
+
+  async selectStateCity(state: string, city: string) {
+    // STATE
+    await this.stateContainer.scrollIntoViewIfNeeded();
+    await this.stateContainer.click({ force: true });
+
+    const stateOpt = this.page
+      .locator("div[id^='react-select-3-option-']")
+      .filter({ hasText: state })
+      .first();
+
+    await expect(stateOpt).toBeVisible();
+    await stateOpt.click();
+
+    await expect(this.stateContainer).toContainText(new RegExp(state, "i"));
+
+    // CITY
+    await this.cityContainer.scrollIntoViewIfNeeded();
+    await this.cityContainer.click({ force: true });
+
+    const cityOpt = this.page
+      .locator("div[id^='react-select-4-option-']")
+      .filter({ hasText: city })
+      .first();
+
+    await expect(cityOpt).toBeVisible();
+    await cityOpt.click();
+
+    await expect(this.cityContainer).toContainText(new RegExp(city, "i"));
+  }
+
+  // Submit, Modal
+  async submit() {
+    await this.makePageStableForClicking();
+    await this.submitBtn.scrollIntoViewIfNeeded();
+    await this.submitBtn.click({ force: true });
+  }
+
+  async expectModalVisible() {
+    await expect(this.modalContent).toBeVisible();
+    await expect(this.modalTitle).toBeVisible();
+  }
+
+  async expectModalTitle(expected: string) {
+    await expect(this.modalTitle).toHaveText(expected);
+  }
+
+  async closeModalAndWaitGone() {
+    await this.modalCloseBtn.scrollIntoViewIfNeeded();
+    await this.modalCloseBtn.click({ force: true });
+
+    await expect(this.modalRoot).toBeHidden({ timeout: 8000 });
+  }
+
+  async getModalValue(label: string): Promise<string> {
+    const row = this.page.locator("table.table tbody tr").filter({
+      has: this.page.locator("td").first().filter({ hasText: label }),
+    });
+
+    await expect(row).toBeVisible();
+    return (await row.locator("td").nth(1).innerText()).trim();
+  }
+}
