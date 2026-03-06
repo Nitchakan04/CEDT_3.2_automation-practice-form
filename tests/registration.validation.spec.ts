@@ -148,7 +148,7 @@ test.describe("Student Registration Form - Validation", () => {
         email: TEST_EMAILS.validUniversity,
       });
       await reg.submit();
-      await expectPreventSubmit("#userEmail:invalid");
+      await reg.expectModalVisible();
     });
 
     test("TC15: Email invalid (missing @)", async () => {
