@@ -77,7 +77,9 @@ export class RegistrationPage {
   // Navigation
   async goto() {
     await this.page.goto(BASE_URL, { waitUntil: "domcontentloaded" });
-    await expect(this.page.getByText("Student Registration Form")).toBeVisible();
+    await expect(
+      this.page.getByText("Student Registration Form"),
+    ).toBeVisible();
     await this.makePageStableForClicking();
   }
 
@@ -95,7 +97,8 @@ export class RegistrationPage {
     if (data.gender !== undefined) await this.selectGender(data.gender);
     if (data.mobile !== undefined) await this.mobile.fill(data.mobile);
 
-    if (data.dob) await this.setDobByCalendar(data.dob.day, data.dob.month, data.dob.year);
+    if (data.dob)
+      await this.setDobByCalendar(data.dob.day, data.dob.month, data.dob.year);
 
     if (data.subjects?.length) await this.addSubjects(data.subjects);
 
@@ -103,7 +106,8 @@ export class RegistrationPage {
       for (const h of data.hobbies) await this.selectHobby(h);
     }
 
-    if (data.picturePath) await this.uploadPicture.setInputFiles(data.picturePath);
+    if (data.picturePath)
+      await this.uploadPicture.setInputFiles(data.picturePath);
 
     if (data.address !== undefined) await this.address.fill(data.address);
 
@@ -114,10 +118,18 @@ export class RegistrationPage {
 
   // Gender / Hobby
   private genderSel(g: Gender) {
-    return g === "Male" ? "#gender-radio-1" : g === "Female" ? "#gender-radio-2" : "#gender-radio-3";
+    return g === "Male"
+      ? "#gender-radio-1"
+      : g === "Female"
+        ? "#gender-radio-2"
+        : "#gender-radio-3";
   }
   private hobbySel(h: Hobby) {
-    return h === "Sports" ? "#hobbies-checkbox-1" : h === "Reading" ? "#hobbies-checkbox-2" : "#hobbies-checkbox-3";
+    return h === "Sports"
+      ? "#hobbies-checkbox-1"
+      : h === "Reading"
+        ? "#hobbies-checkbox-2"
+        : "#hobbies-checkbox-3";
   }
 
   async selectGender(g: Gender) {
@@ -147,7 +159,10 @@ export class RegistrationPage {
       await this.subjectsInput.click({ force: true });
       await this.subjectsInput.fill(s);
 
-      const opt = this.page.locator(".subjects-auto-complete__option").filter({ hasText: s }).first();
+      const opt = this.page
+        .locator(".subjects-auto-complete__option")
+        .filter({ hasText: s })
+        .first();
       await expect(opt).toBeVisible();
       await opt.click();
 
@@ -156,23 +171,36 @@ export class RegistrationPage {
   }
 
   async subjectTagCount(): Promise<number> {
-    return await this.page.locator(".subjects-auto-complete__multi-value").count();
+    return await this.page
+      .locator(".subjects-auto-complete__multi-value")
+      .count();
   }
 
   async expectSubjectsTags(subjects: string[]) {
     for (const s of subjects) {
-      await expect(this.page.locator(".subjects-auto-complete__multi-value").filter({ hasText: s })).toBeVisible();
+      await expect(
+        this.page
+          .locator(".subjects-auto-complete__multi-value")
+          .filter({ hasText: s }),
+      ).toBeVisible();
     }
   }
 
   async removeSubjectTagByName(subject: string) {
-    const tag = this.page.locator(".subjects-auto-complete__multi-value").filter({ hasText: subject }).first();
+    const tag = this.page
+      .locator(".subjects-auto-complete__multi-value")
+      .filter({ hasText: subject })
+      .first();
     await expect(tag).toBeVisible();
     await tag.locator(".subjects-auto-complete__multi-value__remove").click();
-    await expect(this.page.locator(".subjects-auto-complete__multi-value").filter({ hasText: subject })).toHaveCount(0);
+    await expect(
+      this.page
+        .locator(".subjects-auto-complete__multi-value")
+        .filter({ hasText: subject }),
+    ).toHaveCount(0);
   }
 
-  // DOB 
+  // DOB
   async getDobValue(): Promise<string> {
     return await this.dobInput.inputValue();
   }
@@ -190,12 +218,18 @@ export class RegistrationPage {
 
   async setDobByCalendar(day: number, month: number, year: number) {
     await this.dobInput.click();
-    await this.page.locator(".react-datepicker__month-select").selectOption(String(month - 1));
-    await this.page.locator(".react-datepicker__year-select").selectOption(String(year));
+    await this.page
+      .locator(".react-datepicker__month-select")
+      .selectOption(String(month - 1));
+    await this.page
+      .locator(".react-datepicker__year-select")
+      .selectOption(String(year));
 
     const dd = String(day).padStart(2, "0");
     await this.page
-      .locator(`.react-datepicker__day--0${dd}:not(.react-datepicker__day--outside-month)`)
+      .locator(
+        `.react-datepicker__day--0${dd}:not(.react-datepicker__day--outside-month)`,
+      )
       .first()
       .click();
 
@@ -213,14 +247,19 @@ export class RegistrationPage {
     if (disabled) return;
 
     await this.cityContainer.click({ force: true });
-    await expect(this.page.locator('div[id^="react-select-4-option-"]')).toHaveCount(0);
+    await expect(
+      this.page.locator('div[id^="react-select-4-option-"]'),
+    ).toHaveCount(0);
   }
 
   async selectState(state: string) {
     await this.stateContainer.scrollIntoViewIfNeeded();
     await this.stateContainer.click({ force: true });
 
-    const stateOpt = this.page.locator("div[id^='react-select-3-option-']").filter({ hasText: state }).first();
+    const stateOpt = this.page
+      .locator("div[id^='react-select-3-option-']")
+      .filter({ hasText: state })
+      .first();
     await expect(stateOpt).toBeVisible();
     await stateOpt.click();
 
@@ -231,7 +270,10 @@ export class RegistrationPage {
     await this.cityContainer.scrollIntoViewIfNeeded();
     await this.cityContainer.click({ force: true });
 
-    const cityOpt = this.page.locator("div[id^='react-select-4-option-']").filter({ hasText: city }).first();
+    const cityOpt = this.page
+      .locator("div[id^='react-select-4-option-']")
+      .filter({ hasText: city })
+      .first();
     await expect(cityOpt).toBeVisible();
     await cityOpt.click();
 
@@ -240,10 +282,15 @@ export class RegistrationPage {
 
   async getVisibleCityOptions(): Promise<string[]> {
     await this.cityContainer.click({ force: true });
-    return await this.page.locator('div[id^="react-select-4-option-"]').allTextContents();
+    return await this.page
+      .locator('div[id^="react-select-4-option-"]')
+      .allTextContents();
   }
 
-  async expectCityOptionsContainOnly(expectedCity: string, notExpectedCity?: string) {
+  async expectCityOptionsContainOnly(
+    expectedCity: string,
+    notExpectedCity?: string,
+  ) {
     const list = (await this.getVisibleCityOptions()).join(" ");
     expect(list).toContain(expectedCity);
     if (notExpectedCity) expect(list).not.toContain(notExpectedCity);
@@ -281,14 +328,26 @@ export class RegistrationPage {
 
   async expectModalMatchesData(data: Required<RegistrationData>) {
     const months = [
-      "January","February","March","April","May","June",
-      "July","August","September","October","November","December",
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
     ];
 
     const dobText = `${String(data.dob.day).padStart(2, "0")} ${months[data.dob.month - 1]},${data.dob.year}`;
     const pictureName = path.basename(data.picturePath);
 
-    expect(await this.getModalValue("Student Name")).toBe(`${data.firstName} ${data.lastName}`);
+    expect(await this.getModalValue("Student Name")).toBe(
+      `${data.firstName} ${data.lastName}`,
+    );
     expect(await this.getModalValue("Student Email")).toBe(data.email);
     expect(await this.getModalValue("Gender")).toBe(data.gender);
     expect(await this.getModalValue("Mobile")).toBe(data.mobile);
@@ -298,7 +357,9 @@ export class RegistrationPage {
     expect(await this.getModalValue("Hobbies")).toBe(data.hobbies.join(", "));
     expect(await this.getModalValue("Picture")).toBe(pictureName);
     expect(await this.getModalValue("Address")).toBe(data.address);
-    expect(await this.getModalValue("State and City")).toBe(`${data.state} ${data.city}`);
+    expect(await this.getModalValue("State and City")).toBe(
+      `${data.state} ${data.city}`,
+    );
   }
 
   async expectFormIsBlank() {

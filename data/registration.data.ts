@@ -20,7 +20,7 @@ export const TEST_EMAILS = {
   invalidMissingTld: "name@example",
 } as const;
 
-// Mobile 
+// Mobile
 export const TEST_MOBILES = {
   valid10: "0812345678",
   invalid9: "081234567",
@@ -47,7 +47,7 @@ export const TEST_SUBJECTS = {
   three: ["Maths", "Physics", "Chemistry"] as string[],
 };
 
-// State / City 
+// State / City
 export const TEST_STATE_CITY = {
   NCR: { state: "NCR", city: "Delhi" },
   UP: { state: "Uttar Pradesh", city: "Lucknow" },

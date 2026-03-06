@@ -31,6 +31,4 @@ test.describe("Student Registration Form - Submit & Modal", () => {
     await reg.expectFormIsBlank();
     // Fail
   });
-
-  
 });
