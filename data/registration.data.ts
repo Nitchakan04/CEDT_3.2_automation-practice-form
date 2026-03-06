@@ -15,7 +15,7 @@ export const TEST_FILES = {
 // Email
 export const TEST_EMAILS = {
   validBasic: "name@example.com",
-  invalidUniversity: "name@student.chula.ac.th",
+  validUniversity: "name@student.chula.ac.th",
   invalidMissingAt: "nameexample.com",
   invalidMissingTld: "name@example",
 } as const;

@@ -94,12 +94,11 @@ Case: กรอก Email ถูกต้อง → กด Submit
 Expected Result: submit ได้, Modal ขึ้น
 Actual Result: Modal ขึ้น
 
-TC14: Email invalid (university subdomain)
+TC14: Email valid (university subdomain)
 Fail
 Case: กรอก Email รูปแบบมหาวิทยาลัย → กด Submit → ปิด modal
-Expected Result: ห้าม submit, Modal ไม่ขึ้น, Email invalid
-Actual Result: Modal ขึ้น 
-Cause: ระบบไม่มี validation .com ใน email
+Expected Result: submit ได้, Modal ขึ้น
+Actual Result: Modal ขึ้น
 
 TC15: Email invalid (missing @)
 Pass

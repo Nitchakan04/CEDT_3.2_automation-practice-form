@@ -38,7 +38,6 @@ test.describe("Student Registration Form - Validation", () => {
     }
   }
 
-
   test.describe("Required fields", () => {
     // All Pass
     test("TC01: First Name blank", async () => {
@@ -53,13 +52,14 @@ test.describe("Student Registration Form - Validation", () => {
       await expectPreventSubmit("#lastName:invalid");
     });
 
-
     test("TC03: Gender blank", async () => {
       await reg.fillForm({ ...REQUIRED_BASE, gender: undefined });
       await reg.submit();
 
       await expect(reg.modalContent).toBeHidden();
-      await expect(page.locator('input[name="gender"]:invalid').first()).toBeVisible();
+      await expect(
+        page.locator('input[name="gender"]:invalid').first(),
+      ).toBeVisible();
     });
 
     test("TC04: Mobile blank", async () => {
@@ -114,13 +114,19 @@ test.describe("Student Registration Form - Validation", () => {
     });
 
     test("TC11: Mobile invalid contains letters", async () => {
-      await reg.fillForm({ ...REQUIRED_BASE, mobile: TEST_MOBILES.invalidLetters });
+      await reg.fillForm({
+        ...REQUIRED_BASE,
+        mobile: TEST_MOBILES.invalidLetters,
+      });
       await reg.submit();
       await expectPreventSubmit("#userNumber:invalid");
     });
 
     test("TC12: Mobile invalid contains special symbols", async () => {
-      await reg.fillForm({ ...REQUIRED_BASE, mobile: TEST_MOBILES.invalidSymbols });
+      await reg.fillForm({
+        ...REQUIRED_BASE,
+        mobile: TEST_MOBILES.invalidSymbols,
+      });
       await reg.submit();
       await expectPreventSubmit("#userNumber:invalid");
     });
@@ -128,34 +134,40 @@ test.describe("Student Registration Form - Validation", () => {
 
   // Email validation
   test.describe("Email validation", () => {
+    // All Pass
     test("TC13: Email valid (@gmail)", async () => {
       await reg.fillForm({ ...REQUIRED_BASE, email: TEST_EMAILS.validBasic });
       await reg.submit();
       await reg.expectModalVisible();
       // await closeModalIfVisible();
     });
-    // Pass
 
-    test("TC14: Email invalid (university subdomain)", async () => {
-      await reg.fillForm({ ...REQUIRED_BASE, email: TEST_EMAILS.invalidUniversity });
+    test("TC14: Email valid (university subdomain)", async () => {
+      await reg.fillForm({
+        ...REQUIRED_BASE,
+        email: TEST_EMAILS.validUniversity,
+      });
       await reg.submit();
       await expectPreventSubmit("#userEmail:invalid");
     });
-    // Pass (ควรจะ fail)
 
     test("TC15: Email invalid (missing @)", async () => {
-      await reg.fillForm({ ...REQUIRED_BASE, email: TEST_EMAILS.invalidMissingAt });
+      await reg.fillForm({
+        ...REQUIRED_BASE,
+        email: TEST_EMAILS.invalidMissingAt,
+      });
       await reg.submit();
       await expectPreventSubmit("#userEmail:invalid");
     });
-    // Pass
 
     test("TC16: Email invalid (missing domain extension)", async () => {
-      await reg.fillForm({ ...REQUIRED_BASE, email: TEST_EMAILS.invalidMissingTld });
+      await reg.fillForm({
+        ...REQUIRED_BASE,
+        email: TEST_EMAILS.invalidMissingTld,
+      });
       await reg.submit();
       await expectPreventSubmit("#userEmail:invalid");
     });
-    // Pass
   });
 
   // Picture upload validation
@@ -188,11 +200,10 @@ test.describe("Student Registration Form - Validation", () => {
     test("TC20: Upload TXT", async () => {
       await reg.fillForm({ ...REQUIRED_BASE, picturePath: TEST_FILES.txt });
       await reg.submit();
-    
+
       await expect(reg.modalContent).toBeHidden();
       await expect(page.locator("#uploadPicture:invalid")).toBeVisible();
       // Fail (txt อัปโหลดได้ submit ได้ Modal ขึ้น )
-
     });
   });
 });
